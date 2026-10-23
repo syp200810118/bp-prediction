@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Draft Win Predictor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="mode-quick">
+  <header>
+    <h1>Draft Win Predictor</h1>
+    <p class="sub quick-only">Pick five champions for each side, then predict the win rate.</p>
+    <p class="sub draft-only">Simulate a pro series with fearless draft: champions picked in earlier games can't be picked again.</p>
+    <nav class="modes" role="tablist" aria-label="Mode">
+      <button role="tab" id="mode-quick" data-mode="quick">Quick predict</button>
+      <button role="tab" id="mode-draft" data-mode="draft">Pro draft (fearless)</button>
+    </nav>
+  </header>
+
+  <section class="series draft-only" id="series" aria-label="Series">
+    <div id="series-setup" class="series-setup">
+      <div class="seg" role="radiogroup" aria-label="Series format" id="format">
+        <button role="radio" data-format="1">BO1</button>
+        <button role="radio" data-format="3">BO3</button>
+        <button role="radio" data-format="5">BO5</button>
+      </div>
+      <input id="team-a" class="team-input" maxlength="24" value="Team A" aria-label="Team A name" />
+      <span class="muted">vs</span>
+      <input id="team-b" class="team-input" maxlength="24" value="Team B" aria-label="Team B name" />
+      <button id="start-series" class="primary">Start series</button>
+    </div>
+
+    <div id="series-live" class="series-live" hidden>
+      <div class="score">
+        <span class="muted" id="series-meta"></span>
+        <div class="scoreline"><span id="score-a"></span><strong id="score-nums"></strong><span id="score-b"></span></div>
+      </div>
+      <div id="turn" class="turn" aria-live="polite"></div>
+      <div class="series-buttons">
+        <button id="swap-sides" class="ghost small" title="Only before the first ban of a game">Swap sides</button>
+        <button id="undo" class="ghost small">Undo</button>
+        <button id="new-series" class="ghost small">New series</button>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="team blue" aria-label="Blue side">
+      <h2>Blue side <span class="team-name" id="blue-team"></span></h2>
+      <div class="bans draft-only" id="blue-bans" aria-label="Blue bans"></div>
+      <ol class="slots" id="blue-slots"></ol>
+    </section>
+
+    <section class="pool" aria-label="Champion pool">
+      <div class="pool-controls">
+        <input id="search" type="search" placeholder="Search champions…" autocomplete="off" />
+        <div class="tags" id="tags"></div>
+      </div>
+      <div class="grid" id="grid"><p class="muted">Loading champions…</p></div>
+    </section>
+
+    <section class="team red" aria-label="Red side">
+      <h2><span class="team-name" id="red-team"></span> Red side</h2>
+      <div class="bans draft-only" id="red-bans" aria-label="Red bans"></div>
+      <ol class="slots" id="red-slots"></ol>
+    </section>
+  </main>
+
+  <section class="actions">
+    <div class="filters">
+      <div class="filter"><span class="filter-label" id="region-label">Region</span><div class="dropdown" id="region"></div></div>
+      <div class="filter"><span class="filter-label" id="tier-label">Tier</span><div class="dropdown" id="tier"></div></div>
+    </div>
+    <div class="buttons">
+      <button id="predict" class="primary" disabled>Predict win rate</button>
+      <button id="reset" class="ghost">Reset draft</button>
+    </div>
+    <div class="record draft-only" id="record">
+      <span class="muted">Record winner:</span>
+      <button id="blue-won" class="side-btn blue-btn" disabled></button>
+      <button id="red-won" class="side-btn red-btn" disabled></button>
+    </div>
+    <span id="status" class="muted" role="status"></span>
+  </section>
+
+  <section id="result" class="result" hidden aria-live="polite">
+    <div class="labels">
+      <span class="blue-text"><strong id="blue-pct">–</strong> <span id="blue-result-name">Blue</span></span>
+      <span class="red-text"><span id="red-result-name">Red</span> <strong id="red-pct">–</strong></span>
+    </div>
+    <div class="bar"><div id="blue-bar" class="bar-blue"></div><div id="red-bar" class="bar-red"></div></div>
+    <p id="verdict" class="verdict"></p>
+  </section>
+
+  <section id="history" class="history draft-only" aria-label="Series history"></section>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
